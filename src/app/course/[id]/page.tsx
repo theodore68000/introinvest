@@ -14,6 +14,7 @@ export function generateStaticParams() {
   return ALL_COURSES.map((c) => ({ id: c.id }));
 }
 
+
 export default async function CoursePage(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params; // ✅ unwrap params (Next)
   const course = getCourseById(id);
