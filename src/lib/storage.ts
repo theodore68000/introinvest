@@ -1,36 +1,16 @@
-const STORAGE_KEY = "finlearn:progress:v1";
-
-export function nowIso() {
-  return new Date().toISOString();
-}
+const KEY = "finlearn:progress:v1";
 
 export function readJson<T>(fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return fallback;
-    return JSON.parse(raw) as T;
+    const raw = localStorage.getItem(KEY);
+    return raw ? (JSON.parse(raw) as T) : fallback;
   } catch {
     return fallback;
   }
 }
 
-export function writeJson<T>(value: T) {
+export function writeJson<T>(value: T): void {
   if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
-  } catch {
-    // ignore (storage blocked)
-  }
+  localStorage.setItem(KEY, JSON.stringify(value));
 }
-
-export function clearStorage() {
-  if (typeof window === "undefined") return;
-  try {
-    window.localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    // ignore
-  }
-}
-
-export const STORAGE = { key: STORAGE_KEY };

@@ -1,4 +1,3 @@
-// src/components/ProgressBar.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -13,7 +12,6 @@ type Props =
 export default function ProgressBar(props: Props) {
   const [tick, setTick] = useState(0);
 
-  // Re-render when progress changes (custom event fired in lib/progress.ts)
   useEffect(() => {
     const onChange = () => setTick((t) => t + 1);
     window.addEventListener("finlearn:progress", onChange);
@@ -44,6 +42,7 @@ export default function ProgressBar(props: Props) {
             height: "100%",
             width: `${percent}%`,
             background: "rgba(122, 162, 255, 0.55)",
+            transition: "width 300ms ease",
           }}
         />
       </div>
@@ -66,7 +65,7 @@ function compute(props: Props): { percent: number; label: string } {
     const total = part.courses.length;
     const completed = part.courses.filter((c) => prog.completedById[c.id]).length;
     const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-    return { percent, label: "Partie" };
+    return { percent, label: `${completed}/${total}` };
   }
 
   // global
@@ -74,5 +73,5 @@ function compute(props: Props): { percent: number; label: string } {
   const total = allCourses.length;
   const completed = allCourses.filter((c) => prog.completedById[c.id]).length;
   const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-  return { percent, label: "Global" };
+  return { percent, label: `${completed}/${total} capsules` };
 }

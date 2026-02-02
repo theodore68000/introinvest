@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "FinLearn Lite",
-  description: "Capsules d’éducation financière — 100% frontend",
+  title: "InvestIntro",
+  description: "Capsules d'éducation financière",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

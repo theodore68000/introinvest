@@ -1,38 +1,39 @@
 import { PARTS } from "../content/courses";
+import { readJson, writeJson } from "./storage";
 import type { ProgressState } from "./types";
-import { nowIso, readJson, writeJson } from "./storage";
 
-const INITIAL: ProgressState = {
-  version: 1,
-  completedById: {},
-  updatedAt: nowIso(),
-};
+const EMPTY: ProgressState = { version: 1, completedById: {}, updatedAt: "" };
+
+function read(): ProgressState {
+  return readJson<ProgressState>(EMPTY);
+}
+
+function save(state: ProgressState): void {
+  state.updatedAt = new Date().toISOString();
+  writeJson(state);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event("finlearn:progress"));
+  }
+}
 
 export function getProgress() {
-  const state = readJson<ProgressState>(INITIAL);
+  const state = read();
   const allCourses = PARTS.flatMap((p) => p.courses);
-  const totalCount = allCourses.length;
-  const completedCount = allCourses.filter((c) => state.completedById[c.id]).length;
-
   return {
     ...state,
-    totalCount,
-    completedCount,
+    completedCount: allCourses.filter((c) => state.completedById[c.id]).length,
+    totalCount: allCourses.length,
   };
 }
 
-export function markCourseCompleted(courseId: string) {
-  const state = readJson<ProgressState>(INITIAL);
+export function markCourseCompleted(courseId: string): void {
+  const state = read();
   state.completedById[courseId] = true;
-  state.updatedAt = nowIso();
-  writeJson(state);
-  window.dispatchEvent(new Event("finlearn:progress"));
+  save(state);
 }
 
-export function markCourseUncompleted(courseId: string) {
-  const state = readJson<ProgressState>(INITIAL);
-  state.completedById[courseId] = false;
-  state.updatedAt = nowIso();
-  writeJson(state);
-  window.dispatchEvent(new Event("finlearn:progress"));
+export function markCourseUncompleted(courseId: string): void {
+  const state = read();
+  delete state.completedById[courseId];
+  save(state);
 }

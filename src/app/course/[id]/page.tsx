@@ -14,9 +14,8 @@ export function generateStaticParams() {
   return ALL_COURSES.map((c) => ({ id: c.id }));
 }
 
-
 export default async function CoursePage(props: { params: Promise<{ id: string }> }) {
-  const { id } = await props.params; // ✅ unwrap params (Next)
+  const { id } = await props.params;
   const course = getCourseById(id);
 
   if (!course) {
@@ -24,25 +23,19 @@ export default async function CoursePage(props: { params: Promise<{ id: string }
       <div className="container">
         <header className="nav">
           <div className="brand">
-            <Link href="/" style={{ textDecoration: "none" }}>
-              FinLearn Lite
-            </Link>
+            <Link href="/" style={{ textDecoration: "none" }}>InvestIntro</Link>
             <span className="badge">Cours introuvable</span>
           </div>
           <nav className="navlinks">
-            <Link className="btn" href="/dashboard">
-              Dashboard
-            </Link>
+            <Link className="btn" href="/">Dashboard</Link>
           </nav>
         </header>
 
         <main style={{ paddingTop: 18 }}>
           <div className="card">
             <h1 className="h2">Cours introuvable</h1>
-            <p className="p">L’identifiant demandé ne correspond à aucun cours.</p>
-            <Link className="btn primary" href="/dashboard">
-              Retour au dashboard
-            </Link>
+            <p className="p">L&apos;identifiant demandé ne correspond à aucun cours.</p>
+            <Link className="btn primary" href="/">Retour au dashboard</Link>
           </div>
         </main>
       </div>
@@ -55,18 +48,11 @@ export default async function CoursePage(props: { params: Promise<{ id: string }
     <div className="container">
       <header className="nav">
         <div className="brand">
-          <Link href="/" style={{ textDecoration: "none" }}>
-            FinLearn Lite
-          </Link>
+          <Link href="/" style={{ textDecoration: "none" }}>InvestIntro</Link>
           <span className="badge">Cours</span>
         </div>
         <nav className="navlinks">
-          <Link className="btn" href="/dashboard">
-            Dashboard
-          </Link>
-          <Link className="btn" href="/settings">
-            Paramètres
-          </Link>
+          <Link className="btn" href="/">Dashboard</Link>
         </nav>
       </header>
 
@@ -77,7 +63,6 @@ export default async function CoursePage(props: { params: Promise<{ id: string }
               <div style={{ fontWeight: 800, fontSize: 18 }}>{course.title}</div>
               <div className="meta" style={{ marginTop: 6 }}>
                 <span className="badge">{course.minutes} min</span>
-                <span style={{ color: "var(--muted)" }}>{course.id}</span>
               </div>
             </div>
             <div style={{ minWidth: 240 }}>
@@ -93,23 +78,12 @@ export default async function CoursePage(props: { params: Promise<{ id: string }
 
           <hr className="hr" />
 
-          {/* Actions client (progression) */}
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <button className="btn primary" data-course-complete={course.id}>
-              Marquer comme lu
-            </button>
-            <button className="btn" data-course-uncomplete={course.id}>
-              Marquer comme non lu
-            </button>
-          </div>
+          <button className="btn primary" data-course-complete={course.id}>
+            Marquer comme lu
+          </button>
 
-          <p className="p" style={{ marginTop: 12 }}>
-            Astuce : la progression est stockée localement sur cet appareil (voir Paramètres).
-          </p>
+          <ClientCourseActions courseId={course.id} />
         </div>
-
-        {/* Bind handlers to buttons */}
-        <ClientCourseActions courseId={course.id} />
       </main>
     </div>
   );

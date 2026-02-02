@@ -1,57 +1,54 @@
-import Link from "next/link";
+import { PARTS } from "../content/courses";
+import CourseCard from "../components/CourseCard";
+import ProgressBar from "../components/ProgressBar";
 
 export default function HomePage() {
   return (
     <div className="container">
       <header className="nav">
         <div className="brand">
-          <span>FinLearn Lite</span>
-          <span className="badge">Capsules • 3 parties</span>
+          <span>InvestIntro</span>
+          <span className="badge">Capsules</span>
         </div>
-        <nav className="navlinks">
-          <Link className="btn" href="/dashboard">Dashboard</Link>
-          <Link className="btn" href="/settings">Paramètres</Link>
-        </nav>
       </header>
 
       <main style={{ paddingTop: 18 }}>
-        <h1 className="h1">Apprendre la finance, sans surcharge.</h1>
+        <h1 className="h1">Dashboard</h1>
         <p className="p">
-          Trois parties (Comprendre / Choisir / Investir), des capsules courtes, et une progression locale
-          (optionnelle). Tout est accessible immédiatement.
+          Un parcours en 3 parties est proposé.
+          Si tu es débutant.e, il est recommandé de traiter les modules dans l&apos;ordre.
+          Tu peux revenir sur n&apos;importe quel module à tout moment.
         </p>
 
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 }}>
-          <Link className="btn primary" href="/dashboard">Ouvrir le dashboard</Link>
-          <Link className="btn" href="/settings">Gérer ma progression</Link>
+        <div className="card" style={{ marginBottom: 14 }}>
+          <div className="meta" style={{ justifyContent: "space-between", marginBottom: 4 }}>
+            <strong>Progression globale</strong>
+          </div>
+          <ProgressBar mode="global" />
         </div>
 
-        <hr className="hr" />
+        <div className="grid">
+          {PARTS.map((part) => (
+            <section key={part.id} className="card">
+              <div className="meta" style={{ justifyContent: "space-between" }}>
+                <div>
+                  <div style={{ fontSize: 18, fontWeight: 800 }}>{part.title}</div>
+                  <div style={{ color: "var(--muted)", marginTop: 4 }}>{part.description}</div>
+                </div>
+                <div style={{ minWidth: 220 }}>
+                  <ProgressBar mode="part" partId={part.id} />
+                </div>
+              </div>
 
-        <div className="grid cols2">
-          <div className="card">
-            <h2 className="h2">Ce que l’app fait</h2>
-            <p className="p">
-              Une lecture guidée par thèmes. Chaque capsule est un cours autonome, écrit en Markdown.
-            </p>
-            <div className="meta">
-              <span>✅ 100% frontend</span>
-              <span>✅ Tout accessible</span>
-              <span>✅ Progression locale</span>
-            </div>
-          </div>
+              <hr className="hr" />
 
-          <div className="card">
-            <h2 className="h2">Ce que l’app ne fait pas</h2>
-            <p className="p">
-              Aucun conseil personnalisé, aucun broker, aucune promesse de gains.
-            </p>
-            <div className="meta">
-              <span>❌ Trading</span>
-              <span>❌ Recommandations “quoi acheter”</span>
-              <span>❌ Backend / comptes</span>
-            </div>
-          </div>
+              <div className="grid cols2">
+                {part.courses.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       </main>
     </div>
