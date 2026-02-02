@@ -163,11 +163,11 @@ export const PARTS: Part[] = [
     description: "Passer à l’action dès maintenant !",
     courses: [
       {
-        id: "Les plateformes d'investissment",
-        title: "Quand investir ? (mythes et réalité)",
+        id: "investir-1",
+        title: "Les plateformes d'investissement",
         minutes: 6,
         lessonPath: "investir/c1.md",
-        summary: "Découvre les plateformes depuis lequel tu peux investir, avec leurs avantages et inconvénients",
+        summary: "Découvre les plateformes depuis lesquelles tu peux investir, avec leurs avantages et inconvénients",
       },
       {
         id: "investir-2",
